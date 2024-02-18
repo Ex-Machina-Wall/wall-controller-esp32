@@ -50,3 +50,9 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+.pio
+.vscode
+src/secrets.h
+lib
+.DS_Store
