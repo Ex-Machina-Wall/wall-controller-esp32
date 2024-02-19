@@ -6,6 +6,7 @@
 uint8_t postData[MAX_POST_DATA_SIZE];
 size_t postDataLength = 0;
 bool newData = false;
+uint8_t aNumber = 1;
 DataPacket receivedData;
 
 // AsyncWebServer server(80);
@@ -17,7 +18,8 @@ void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventT
   if(type == WS_EVT_CONNECT){
  
     Serial.println("Websocket client connection received");
- 
+    client->text("Hello from the Ex Machina Wall!");
+
   } else if(type == WS_EVT_DISCONNECT){
     Serial.println("Client disconnected");
     
@@ -35,6 +37,7 @@ void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventT
         // Handle the case where the data exceeds the buffer size
         // You can choose to send an error response or take other actions as needed
     }
+    client->binary(&aNumber, 1);
   }
 }
 
