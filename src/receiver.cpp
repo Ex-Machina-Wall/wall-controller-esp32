@@ -37,7 +37,7 @@ void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventT
         // Handle the case where the data exceeds the buffer size
         // You can choose to send an error response or take other actions as needed
     }
-    client->binary(&aNumber, 1);
+    // client->binary(&aNumber, 1);
   }
 }
 

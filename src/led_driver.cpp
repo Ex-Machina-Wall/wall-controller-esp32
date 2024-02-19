@@ -44,16 +44,36 @@ void updatePixelColors(){
     pixels.show();
 };
 
+int getModification(int error, float ramp_rate){
+    // if (error < 0){
+    //     ramp_rate = ramp_rate * 2;
+    //     if (ramp_rate > 1){
+    //         ramp_rate = 1;
+    //     }
+    // }
+    float modification = ((float(error)*ramp_rate));
+    if ((modification > 0) & (modification < 1)){
+      modification = 1;
+    } else if (modification < 0 & modification > -1){
+      modification = - 1;
+    }
+    return int(modification);
+};
+
 void iterPixel(Pixel_S *pixel){
     float ramp_rate = RAMP_GAIN;
     // if r > r_target then r_error will be positive, there for we need to subtract it
     // if r < r_target then r_error will be negative, therefor we still subtract it
     float r_error = pixel->r - pixel->r_target;
-    pixel->r = int(float(pixel->r) - ((float(r_error)*ramp_rate) + 0.5));
+    float modification = getModification(r_error, ramp_rate);
+    pixel->r = pixel->r - modification;
     
     float g_error = pixel->g - pixel->g_target;
-    pixel->g = int(float(pixel->g) - ((float(g_error)*ramp_rate) + 0.5));
+    modification = getModification(g_error, ramp_rate);
+    pixel->g = pixel->g - modification;
 
     float b_error = pixel->b - pixel->b_target;
-    pixel->b = int(float(pixel->b) - ((float(b_error)*ramp_rate) + 0.5));
+    modification = getModification(b_error, ramp_rate);
+    pixel->b = pixel->b - modification;
+    
 }
