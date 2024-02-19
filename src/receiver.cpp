@@ -6,6 +6,7 @@
 uint8_t postData[MAX_POST_DATA_SIZE];
 size_t postDataLength = 0;
 bool newData = false;
+uint8_t received = 1;
 DataPacket receivedData;
 
 // AsyncWebServer server(80);
@@ -17,24 +18,32 @@ void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventT
   if(type == WS_EVT_CONNECT){
  
     Serial.println("Websocket client connection received");
+    client->text("Hello from Ex Wall Server");
  
   } else if(type == WS_EVT_DISCONNECT){
     Serial.println("Client disconnected");
     
   } else if(type == WS_EVT_DATA){
-
+    // print data and length
+    // Serial.print("Data Length: "); Serial.println(len);
+    
+    // client->binary(&receivedInt.an_int, sizeof(receivedInt.an_int));
     // if (postDataLength + len <= MAX_POST_DATA_SIZE) {
     if (len <= MAX_POST_DATA_SIZE) {
+        
         if (len == 220){
           memcpy(&receivedData, data, len);
-          Serial.print("Data Length: "); Serial.println(len);
-          Serial.print("Ramp Rate: "); Serial.println(receivedData.ramp_rate);
-          newData = true;
+          // Serial.print("Data Length: "); Serial.println(len);
+          // Serial.print("Ramp Rate: "); Serial.println(receivedData.ramp_rate);
+          // newData = true;
         }
     } else {
         // Handle the case where the data exceeds the buffer size
         // You can choose to send an error response or take other actions as needed
     }
+    // Send back a binary 1 just to say we received something
+    client->binary(&received, sizeof(received));
+
   }
 }
 
